@@ -1,14 +1,12 @@
-/*
-import { isBrowser, isJsDom } from 'browser-or-node';
-import * as mod from 'module';
-import * as path from 'path';
-let internalRequire = null;
-if(typeof require !== 'undefined') internalRequire = require;
-const ensureRequire = ()=> (!internalRequire) && (internalRequire = mod.createRequire(import.meta.url));
-//*/
-
-/**
- * A JSON object
- * @typedef { object } JSON
- */
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "Lettering", {
+  enumerable: true,
+  get: function () {
+    return _text.Lettering;
+  }
+});
+var _text = require("./text.cjs");

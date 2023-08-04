@@ -11,3 +11,6 @@ const ensureRequire = ()=> (!internalRequire) && (internalRequire = mod.createRe
  * A JSON object
  * @typedef { object } JSON
  */
+ 
+import { Lettering } from './text.mjs';
+export { Lettering };
