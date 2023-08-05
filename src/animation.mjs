@@ -1,4 +1,4 @@
-/* global $:false, $element:false */
+/* global $element:false */
 /*
  * textillate.js
  * http://jschr.github.com/textillate
@@ -6,7 +6,7 @@
  *
  * Copyright (C) 2012-2013 Jordan Schroter
  */
- 
+//import 'animate.css';
 'use strict';
  
 const isInEffect = (effect)=>{
@@ -93,34 +93,109 @@ const animateTokens = ($tokens, options, cb)=>{
             complete();
     });
 };
+
+const $ = (selector)=>{
+    const contents = typeof selector === 'string'?document.querySelectorAll(selector):[selector];
+    const instance = new Proxy(contents, {
+        get(target, prop, receiver){
+            console.log('!!!', target);
+            console.log(prop, target[prop], target[0][prop]);
+            if(target[prop]){ //allow access to collection members
+                return target[prop];
+            }
+            if(typeof target[0][prop] === 'function'){
+                return (...args)=>{
+                    return Array.from(target).map((item)=>{
+                        return item[prop](...args);
+                    });
+                };
+            }else{
+                return Array.from(target).map((item)=>{
+                    return item[prop];
+                });
+            }
+        },
+        set(target, prop, value){
+            target.forEach((item, index)=>{
+                target[index][prop] = value;
+            });
+            return true;
+        },
+    });
+    
+    return instance;
+};
  
 export class Textillate{
+    static defaults = {
+        selector: '.texts',
+        loop: false,
+        minDisplayTime: 2000,
+        initialDelay: 0,
+        in: {
+            effect: 'fadeInLeftBig',
+            delayScale: 1.5,
+            delay: 50,
+            sync: false,
+            reverse: false,
+            shuffle: false,
+            callback: function () {}
+        },
+        out: {
+            effect: 'hinge',
+            delayScale: 1.5,
+            delay: 50,
+            sync: false,
+            reverse: false,
+            shuffle: false,
+            callback: function () {}
+        },
+        autoStart: true,
+        inEffects: [],
+        outEffects: [ 'hinge' ],
+        callback: function () {},
+        type: 'char'
+    };
     constructor(element, options={}){
-        this.element = typeof element === 'string'?document.querySelectorAll(element):element;
-        this.$texts = $element.find(options.selector);
+        this.element = $(element);
+        this.$texts = this.element.querySelectorAll(options.selector).reduce(
+            (agg, list)=>{
+                return agg.concat(Array.from(list));
+            },
+            []
+        );
+        console.log('>>', this.element.querySelectorAll(options.selector), this.$texts);
         
         if (!this.$texts.length) {
-            this.$texts = $('<ul class="texts"><li>' + $element.html() + '</li></ul>');
-            $element.html(this.$texts);
+            const texts = document.createElement('ul');
+            texts.setAttribute('class', 'texts');
+            const item = document.createElement('li');
+            item.innerHTML = 'FOO';
+            this.element.innerHTML = '';
+            this.element.appendChild(texts);
+            this.$texts = $(texts);
         }
         
-        this.$texts.hide();
+        this.$texts.forEach((text)=>{
+            //console.log(text, this.$texts);
+            //text.style.display = 'none';
+        });
         
-        this.$current = $('<span>')
-            .html(this.$texts.find(':first-child').html())
-            .prependTo($element);
+        this.$current = document.createElement('ul');
+        this.$current.innerHTML = this.$texts.querySelector(':first-child').innerHTML;
+        this.element.insertBefore(this.$current, this.element.firstChild[0]);
         
         if (isInEffect(options.in.effect)) {
-            this.$current.css('visibility', 'hidden');
+            this.$current.style.visibility = 'hidden';
         } else if (isOutEffect(options.out.effect)) {
-            this.$current.css('visibility', 'visible');
+            this.$current.style.visibility = 'visible';
         }
         
         this.setOptions(options);
         
         this.timeoutRun = null;
         
-        setTimeout(function () {
+        setTimeout(()=>{
             this.options.autoStart && this.start();
         }, this.options.initialDelay);
     }

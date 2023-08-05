@@ -5,8 +5,10 @@
     <script type="importmap"> { "imports": {
         "zoomable-timeline": "../src/index.mjs",
         "browser-or-node": "../node_modules/browser-or-node/src/index.js",
+        "animate.css": "../node_modules/animate.css/animate.css",
         "@environment-safe/elements": "../node_modules/@environment-safe/elements/src/index.mjs"
     } }</script>
+    <link href="../node_modules/animate.css/animate.css">
     <title>Lettering.js Examples</title>
     <meta name="description" content="A jQuery Plugin that allows you to style each individual letter and more.">
     <meta name="author" content="Dave Rupert">
@@ -75,15 +77,18 @@
         <div id="demo3" class="demo">
             <h1>Hello there,<br>friend!<br>How are you today?</h1>
         </div>
+        
+        <div id="demo4" class="demo">
+            <h1>Hello there, friend!</h1>
+        </div>
   </div>
 
-
-    <script src="../lettering.js"></script>
     <script type="module">
-        import { Lettering } from '../src/index.mjs';
+        import { Lettering, Textillate } from '../src/index.mjs';
         new Lettering('#demo1 h1').letters();
         new Lettering('#demo2 h1').words();
         new Lettering('#demo3 h1').lines();
+        new Textillate('#demo4 h1', { in: { effect: 'flipInY' }});
     </script>
 
 </body>

@@ -96,6 +96,7 @@
         "prepare": "husky install"
     },
     "dependencies": {
+        "animate.css": "^4.1.1",
         "browser-or-node": "^2.1.1"
     }
 }

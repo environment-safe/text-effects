@@ -9,4 +9,11 @@ Object.defineProperty(exports, "Lettering", {
     return _text.Lettering;
   }
 });
+Object.defineProperty(exports, "Textillate", {
+  enumerable: true,
+  get: function () {
+    return _animation.Textillate;
+  }
+});
 var _text = require("./text.cjs");
+var _animation = require("./animation.cjs");
