@@ -13,5 +13,5 @@ const ensureRequire = ()=> (!internalRequire) && (internalRequire = mod.createRe
  */
  
 import { Lettering } from './text.mjs';
-import { Textillate } from './animation.mjs';
-export { Lettering, Textillate };
+import { TextAnimation } from './animation.mjs';
+export { Lettering, TextAnimation };

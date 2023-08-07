@@ -7,6 +7,7 @@
 export const replaceBreaks = function (elem, hash) {
     var r = document.createTextNode(hash);
     Array.prototype.slice.call(elem.querySelectorAll('br')).forEach(function (br) {
+        console.log('!!', r.cloneNode());
         elem.replaceChild(r.cloneNode(), br);
     });
 };
@@ -24,7 +25,7 @@ export const wrap = function (hash, elems, splitStr, className, after, breaks) {
     elems.forEach(function (elem) {
         var original = elem.textContent;
         if (breaks) {
-            replaceBreaks(elem);
+            replaceBreaks(elem, hash);
         }
         var text = elem.textContent.split(splitStr).map(function (item, index) {
             return '<span class="' + className + (index + 1) + '" aria-hidden="true">' + item + '</span>' + after;
@@ -35,6 +36,17 @@ export const wrap = function (hash, elems, splitStr, className, after, breaks) {
     return elems;
 };
 
+export const select = (context)=>{
+    if(typeof context === 'string'){
+        // Get all of the elements for this instantiation
+        return Array.from(document.querySelectorAll(context));
+    }else{
+        //do it this way to include array like things like node lists
+        if(context.length === null) return [context];
+        return Array.isArray(context)?context:Array.from(context);
+    }
+};
+
 /*!
  * Vanilla JS Lettering.js
  * A vanilla JS fork of http://letteringjs.com/ by Dave Rupert
@@ -43,14 +55,8 @@ export const wrap = function (hash, elems, splitStr, className, after, breaks) {
  */
 export class Lettering{
     constructor(selector){
-         
-        if (!selector) {
-            throw new Error('Please provide a valid selector');
-        }
-        
-        // Get all of the elements for this instantiation
-        this.elems = Array.prototype.slice.call(document.querySelectorAll(selector));
-        
+        if(!selector) throw new Error('Please provide a valid selector');
+        this.elems = select(selector);
         // Hashed string to replace line breaks with
         this.hash = 'eefec303079ad17405c889e092e105b0';
     }
@@ -68,7 +74,7 @@ export class Lettering{
      * @return {Array} The elements that were wrapped
      */
     lines(){
-        return wrap(this.hash, this.elems, ' ', 'word', ' ');
+        return wrap(this.hash, this.elems, this.hash, 'line', '', true);
     }
     
     /**
@@ -76,6 +82,6 @@ export class Lettering{
      * @return {Array} The elements that were wrapped
      */
     words(){
-        return wrap(this.hash, this.elems, this.hash, 'line', '', true);
+        return wrap(this.hash, this.elems, ' ', 'word', ' ');
     }
 }

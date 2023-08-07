@@ -8,7 +8,7 @@
         "animate.css": "../node_modules/animate.css/animate.css",
         "@environment-safe/elements": "../node_modules/@environment-safe/elements/src/index.mjs"
     } }</script>
-    <link href="../node_modules/animate.css/animate.css">
+    <link href="../node_modules/animate.css/animate.css" rel="stylesheet">
     <title>Lettering.js Examples</title>
     <meta name="description" content="A jQuery Plugin that allows you to style each individual letter and more.">
     <meta name="author" content="Dave Rupert">
@@ -67,28 +67,38 @@
 
   <div id="container">
         <div id="demo1" class="demo">
-            <h1>Hello there, friend!</h1>
+            <h1>Rainbow letters as fas as the css can see!</h1>
         </div>
 
         <div id="demo2" class="demo">
-            <h1>Hello there, friend!</h1>
+            <h1>A bunch of words, plain to see.</h1>
         </div>
 
         <div id="demo3" class="demo">
-            <h1>Hello there,<br>friend!<br>How are you today?</h1>
+            <h1>A bunch of<br>different lines<br>to while away the time</h1>
         </div>
         
         <div id="demo4" class="demo">
-            <h1>Hello there, friend!</h1>
+            <h1>Flipping in on their own.</h1>
+        </div>
+        
+        <div id="demo5" class="demo">
+            <h1>Put a little bounce in that count</h1>
+        </div>
+        
+        <div id="demo6" class="demo">
+            <h1>Roll in when no one's expecting it!</h1>
         </div>
   </div>
 
     <script type="module">
-        import { Lettering, Textillate } from '../src/index.mjs';
+        import { Lettering, TextAnimation } from '../src/index.mjs';
         new Lettering('#demo1 h1').letters();
         new Lettering('#demo2 h1').words();
         new Lettering('#demo3 h1').lines();
-        new Textillate('#demo4 h1', { in: { effect: 'flipInY' }});
+        new TextAnimation('#demo4 h1', { fromHidden: true }).animate({ effect: 'flipInY' });
+        new TextAnimation('#demo5 h1').animate({ effect: 'bounce' });
+        new TextAnimation('#demo6 h1', { fromHidden: true }).animate({ effect: 'rollIn' });
     </script>
 
 </body>
